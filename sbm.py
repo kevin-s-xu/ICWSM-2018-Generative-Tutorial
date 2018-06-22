@@ -97,7 +97,7 @@ def spectralCluster(adj,nClusters=0,directed=False):
     
     return clusterId
 
-def estimateBlockProb(adj,clusterId,directed=False):
+def estimateBlockProb(adj,clusterId,directed=False,clipProb=1e-3):
     nClusters = np.max(clusterId)+1
     clusterSizes = np.histogram(clusterId,
                                 bins=np.max(clusterId)+1)[0].astype(float)
@@ -121,8 +121,16 @@ def estimateBlockProb(adj,clusterId,directed=False):
         nEdgesBlock[np.eye(nClusters,dtype=bool)] /= 2
         nPairsBlock[np.eye(nClusters,dtype=bool)] /= 2
     
-    # Edge probabilities at the block level
-    blockProb = nEdgesBlock/nPairsBlock
+    # Edge probabilities at the block level. Set probabilities for empty
+    # blocks or all-zero blocks to clip probability and all-one blocks to
+    # 1 - clip probability
+    blockProb = np.zeros((nClusters,nClusters))
+    emptyBlocks = nPairsBlock == 0
+    nonEmpty = np.logical_not(emptyBlocks)
+    blockProb[emptyBlocks] = clipProb
+    blockProb[nonEmpty] = nEdgesBlock[nonEmpty]/nPairsBlock[nonEmpty]
+    blockProb[blockProb == 0] = clipProb
+    blockProb[blockProb == 1] = 1-clipProb
     
     # Compute log-likelihood: compute only over lower diagonal blocks for
     # undirected graphs to avoid duplicating block pairs

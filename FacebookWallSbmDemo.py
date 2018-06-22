@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Script to fit stochastic block models to Facebook wall posts data.
+Script to fit stochastic block models to Facebook wall posts data. This is a
+demo presented during the ICWSM 2018 tutorial on generative models for social
+media data and is intended to be run 1 line at a time in IPython.
 
 @author: Kevin S. Xu
 """
@@ -35,6 +37,7 @@ print(clusterId)
 # Re-order nodes by class memberships and re-examine adjacency matrix
 sortId = np.argsort(clusterId)
 print(clusterId[sortId])
+plt.ioff()
 plt.figure()
 plt.spy(adj[sortId[:,np.newaxis],sortId])
 plt.show()
@@ -58,7 +61,7 @@ trans = nx.transitivity(net)
 print(trans)
 
 #%% Simulate new networks from SBM fit to check model goodness of fit
-nRuns = 100
+nRuns = 50
 blockProbSim = np.zeros((nClusters,nClusters,nRuns))
 recipSim = np.zeros(nRuns)
 transSim = np.zeros(nRuns)
@@ -72,19 +75,19 @@ for run in range(nRuns):
     transSim[run] = nx.transitivity(netSim)
 meanBlockProbSim = np.mean(blockProbSim,axis=2)
 stdBlockProbSim = np.std(blockProbSim,axis=2)
+print('Actual block densities:')
 print(blockProb)
+print('Mean simulated block densities:')
 print(meanBlockProbSim)
+print('95% confidence interval lower bound:')
 print(meanBlockProbSim-2*stdBlockProbSim)
+print('95% confidence interval upper bound:')
 print(meanBlockProbSim+2*stdBlockProbSim)
-meanRecipSim = np.mean(recipSim)
-stdRecipSim = np.std(recipSim)
-print(recip)
-print(meanRecipSim)
-print(meanRecipSim-2*stdRecipSim)
-print(meanRecipSim+2*stdRecipSim)
-meanTransSim = np.mean(transSim)
-stdTransSim = np.std(transSim)
-print(trans)
-print(meanTransSim)
-print(meanTransSim-2*stdTransSim)
-print(meanTransSim+2*stdTransSim)
+plt.figure()
+plt.hist(recipSim)
+plt.title('Actual reciprocity: %f' % recip)
+plt.show()
+plt.figure()
+plt.hist(transSim)
+plt.title('Actual transitivity: %f' % trans)
+plt.show()
