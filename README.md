@@ -40,7 +40,23 @@ The tutorial will consist of 3 parts:
 
 ## Demos
 
-In the second part of the tutorial, we will be providing demos on fitting generative models to some real social network data. These demos are written in Python and will make use of many scientific computing packages in Python, including NumPy, SciPy, and NetworkX.
+In the second part of the tutorial, we will be providing demos on fitting generative models to some Facebook data collected by Viswanath et al. The entire data set contains over 60,000 nodes and is available at http://socialnetworks.mpi-sws.org/data-wosn2009.html. We will be making use of subsets of the data, so downloading the entire data set is not necessary.
 
-We recommend installing the [Anaconda distribution](https://www.anaconda.com/download/), which already includes all necessary packages. We will be running demos on the Python 3.6 version of Anaconda in IPython using the Spyder IDE (both included with Anaconda).
+### Requirements
+
+These demos are written in Python and will make use of many scientific computing packages in Python, including NumPy, SciPy, and NetworkX. We recommend installing the [Anaconda distribution](https://www.anaconda.com/download/), which already includes all necessary packages. We will be running demos on the Python 3.6 version of Anaconda in IPython using the Spyder IDE (both included with Anaconda).
+
+### Demo 1: Facebook wall post network
+
+- 101 nodes, directed: edge from node `i` to `j` denotes that `i` posted on `j`'s wall.
+- Contains all nodes with at least in- or out-degree of 75, i.e. node `i` is included if `i` has posts to their wall from at least 75 other nodes or if node `i` made posts to the walls of at least 75 other people.
+- Data file (adjacency matrix in text format): `facebook-wall-filtered-adj.txt`
+- Demo Python script: `FacebookWallSbmDemo.py`
+
+### Demo 2: Facebook friendship network
+
+- 106 nodes, undirected: edge between nodes `i` and `j` denotes a friendship between them.
+- Contains all nodes with at least 300 friends.
+- Data file (adjacency matrix in text format): `facebook-links-filtered-adj.txt`
+- Demo Python script: `FacebookFriendsSbmLsmDemo.py`
 
