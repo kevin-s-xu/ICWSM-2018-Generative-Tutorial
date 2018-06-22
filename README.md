@@ -15,7 +15,32 @@ Kevin S. Xu is an assistant professor in the EECS Department at the University o
 
 James R. Foulds (Jimmy) is an assistant professor in the Department of Information Systems at the University of Maryland, Baltimore County. His research interests are in machine learning, focusing on probabilistic latent variable models and the inference algorithms to learn them from social networks and text data. 
 
-## Tutorial Material
+## Tutorial Outline
 
-Material will be posted about a week before the tutorial date.
+The tutorial will consist of 3 parts:
+
+1:30pm-2:15pm: Mathematical representations and generative models for social networks
+
+- Introduction to generative approach
+- Connections to sociological principles
+
+15 min break
+
+2:30pm-3:30pm: Fitting generative social network models to data
+
+- Application scenarios with demos
+- Model selection and evaluation
+
+30 min coffee break
+
+4:00pm-5:30pm: Rich generative models for social media data
+
+- Network models augmented with text and dynamics
+- Case studies on social media data
+
+## Demos
+
+In the second part of the tutorial, we will be providing demos on fitting generative models to some real social network data. These demos are written in Python and will make use of many scientific computing packages in Python, including NumPy, SciPy, and NetworkX.
+
+We recommend installing the [Anaconda distribution](https://www.anaconda.com/download/), which already includes all necessary packages. We will be running demos on the Python 3.6 version of Anaconda in IPython using the Spyder IDE (both included with Anaconda).
 
