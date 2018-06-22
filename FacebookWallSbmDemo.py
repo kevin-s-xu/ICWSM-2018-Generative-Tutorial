@@ -8,17 +8,25 @@ Script to fit stochastic block models to Facebook wall posts data.
 import numpy as np
 import matplotlib.pyplot as plt
 import networkx as nx
-from sbm import *
+import sbm
 
 #%% Load data and visualize adjacency matrix
 adj = np.loadtxt('facebook-wall-filtered-adj.txt')
-plt.ion()
+plt.ioff()
 plt.figure()
 plt.spy(adj)
 plt.show()
 
 #%% Estimate cluster memberships using spectral clustering
-clusterId = spectralCluster(adj,directed=True)
+"""
+Due to a bug in Python 3.6, the interactive figure window displaying the
+eigenvalues may be frozen. As a workaround, set the matplotlib backend to 
+inline, e.g. by running
+    %matplotlib inline
+in the IPython console so that the figure shows in the console itself.
+Reference: https://github.com/matplotlib/matplotlib/issues/9206/
+"""
+clusterId = sbm.spectralCluster(adj,directed=True)
 nClusters = np.max(clusterId)+1
 clusterSizes = np.histogram(clusterId, bins=nClusters)[0]
 print(clusterSizes)
@@ -32,7 +40,7 @@ plt.spy(adj[sortId[:,np.newaxis],sortId])
 plt.show()
 
 #%% Estimate edge probabilities at the block level
-blockProb,logLik = estimateBlockProb(adj,clusterId,directed=True)
+blockProb,logLik = sbm.estimateBlockProb(adj,clusterId,directed=True)
 print(blockProb)
 print(logLik)
 
@@ -56,10 +64,10 @@ recipSim = np.zeros(nRuns)
 transSim = np.zeros(nRuns)
 for run in range(nRuns):
     # Simulate new adjacency matrix and create NetworkX object for it
-    adjSim = generateSbm(clusterId,blockProb,directed=True)
+    adjSim = sbm.generateAdj(clusterId,blockProb,directed=True)
     netSim = nx.DiGraph(adjSim)
-    blockProbSim[:,:,run] = estimateBlockProb(adjSim,clusterId,
-                                              directed=True)[0]
+    blockProbSim[:,:,run] = sbm.estimateBlockProb(adjSim,clusterId,
+                                                  directed=True)[0]
     recipSim[run] = nx.overall_reciprocity(netSim)
     transSim[run] = nx.transitivity(netSim)
 meanBlockProbSim = np.mean(blockProbSim,axis=2)

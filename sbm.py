@@ -11,7 +11,7 @@ from scipy.stats import bernoulli as bern
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 
-def generateSbm(clusterId,blockProb,directed=False):
+def generateAdj(clusterId,blockProb,directed=False):
     nNodes = np.shape(clusterId)[0]
     nClusters = np.shape(blockProb)[0]
     
@@ -74,7 +74,8 @@ def spectralCluster(adj,nClusters=0,directed=False):
     if nClusters == 0:
         # User didn't pre-select the number of clusters so plot the top 20
         # singular values and let the user enter the number of clusters
-        plt.ion()
+        #plt.ion()
+        plt.figure()
         plt.plot(s[:20],'x')
         plt.show()
         nClusters = int(input('Enter the number of clusters: '))
